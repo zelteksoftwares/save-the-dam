@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Assembly Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="gameContainer">
+        <div id="carParts">
+            <div class="hole" id="carBodyHole"></div>
+            <div class="hole" id="carWheel1Hole"></div>
+            <div class="hole" id="carWheel2Hole"></div>
+        </div>
+        <div id="shapes">
+            <img src="/wheel_circle.svg" class="shape" id="carWheel1Shape" draggable="true" alt="Car Wheel 1">
+            <img src="/wheel_circle.svg" class="shape" id="carWheel2Shape" draggable="true" alt="Car Wheel 2">
+        </div>
+    </div>
+    <audio id="correctSound" src="correct.mp3"></audio>
+    <audio id="wrongSound" src="wrong.mp3"></audio>
+    <script src="script.js"></script>
+</body>
+</html>
