@@ -6,6 +6,14 @@ let draggedElement = null;
 document.addEventListener('dragstart', (event) => {
     draggedElement = event.target;
     event.dataTransfer.setData('text', event.target.id);
+    setTimeout(() => {
+        draggedElement.classList.add('hide');
+    }, 0);
+});
+
+document.addEventListener('dragend', (event) => {
+    draggedElement.classList.remove('hide');
+    draggedElement.style.position = 'static'; // Reset the position after dragging ends
 });
 
 document.addEventListener('dragover', (event) => {
@@ -18,10 +26,11 @@ document.addEventListener('drop', (event) => {
     const shape = document.getElementById(id);
     const target = event.target;
 
-    if (isValidMatch(shape, target)) {
+    if (target.classList.contains('hole') && isValidMatch(shape, target)) {
         correctMatch(target, shape);
     } else {
         wrongSound.play();
+        animateWrongDrop(shape);
     }
 });
 
@@ -52,11 +61,13 @@ function handleTouchEnd(event) {
             correctMatch(dropTarget, draggedElement);
         } else {
             wrongSound.play();
+            animateWrongDrop(draggedElement);
             draggedElement.style.position = 'static';
         }
         draggedElement = null;
     }
 }
+
 
 function isValidMatch(shape, target) {
     const shapeId = shape.id;
@@ -72,12 +83,22 @@ function isValidMatch(shape, target) {
 
 function correctMatch(target, shape) {
     correctSound.play();
-    shape.style.position = 'absolute';
-    shape.style.top = '0';
-    shape.style.left = '0';
     shape.classList.add('correct');
     setTimeout(() => {
-        target.appendChild(shape);
         shape.classList.remove('correct');
+        target.appendChild(shape);
+        shape.style.position = 'static'; // Ensure the shape is correctly positioned after appending
     }, 500); // Wait for the fade out transition to complete
+}
+
+function animateWrongDrop(shape) {
+    shape.animate([
+        { transform: 'translateX(0px)' },
+        { transform: 'translateX(-10px)' },
+        { transform: 'translateX(10px)' },
+        { transform: 'translateX(0px)' }
+    ], {
+        duration: 300,
+        iterations: 2
+    });
 }
